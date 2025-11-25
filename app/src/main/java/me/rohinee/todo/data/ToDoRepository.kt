@@ -13,6 +13,7 @@ class ToDoRepository @Inject constructor(
     private val apiService: ToDoApiService
 ){
     val allToDos: Flow<List<ToDo>> = toDoDao.getAllToDo()
+    
     suspend fun refreshTodos(){
         try {
             val remoteTodos = apiService.getToDos()
@@ -22,5 +23,9 @@ class ToDoRepository @Inject constructor(
             Log.e("ToDoRepository", "Error refreshing todos: ${e.message}")
             e.printStackTrace()
         }
+    }
+
+    suspend fun insert(todo: ToDo) {
+        toDoDao.insert(todo)
     }
 }

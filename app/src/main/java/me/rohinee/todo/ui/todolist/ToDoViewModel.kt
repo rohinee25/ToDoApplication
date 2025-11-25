@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import me.rohinee.todo.data.ToDoRepository
 import me.rohinee.todo.data.local.ToDo
 import javax.inject.Inject
+import kotlin.random.Random
 
 
 @HiltViewModel
@@ -25,6 +26,20 @@ class ToDoViewModel @Inject constructor(
     init{
         viewModelScope.launch {
             repository.refreshTodos()
+        }
+    }
+
+    fun addTodo(title: String) {
+        viewModelScope.launch {
+            // Generating a random ID for demo purposes. In a real app, Room can auto-generate IDs.
+            // Also assigning a static userId for now.
+            val newTodo = ToDo(
+                id = Random.nextInt(),
+                userId = 1,
+                title = title,
+                completed = false
+            )
+            repository.insert(newTodo)
         }
     }
 }
